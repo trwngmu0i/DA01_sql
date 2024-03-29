@@ -8,7 +8,8 @@ select count(city) - count(distinct city)
 from station;
 
 -- ex 3
-
+select ceiling(avg(salary) - avg(cast(replace(cast(salary as char), '0','') as signed integer)))
+from employees;
 
 -- ex 4
 SELECT cast(sum(item_count*order_occurrences)/sum(order_occurrences) as decimal(10,1)) as mean
