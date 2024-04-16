@@ -42,3 +42,40 @@ select user_id, tweet_date,
  else round(1.0*(tweet_count + lag1 + lag2)/3,2)
  end rolling_avg_3d
 from tab;
+
+-- ex 6
+with tab as (SELECT *, 
+  lag(transaction_timestamp) over (partition by merchant_id, credit_card_id) as pre_time,
+  lag(amount) over (partition by merchant_id, credit_card_id) as pre_amount
+FROM transactions)
+
+select count(*)
+from tab
+where pre_time is not null
+  and amount -pre_amount = 0
+  and transaction_timestamp - pre_time <= '10 minutes'::interval;
+
+-- ex 7
+with tab1 as(select category, product, sum(spend) as total_spend
+from product_spend
+where transaction_date >='01-01-2022' and transaction_date <'01-01-2023'
+group by category, product)
+
+select category, product, total_spend from 
+(select *, 
+  lag(total_spend,2) over (PARTITION BY category order by total_spend desc) as lag
+from tab1) as tab2
+where lag is null
+
+-- ex 8
+with tab as (SELECT r.day, r.song_id, a.artist_name, r.rank
+FROM global_song_rank as r
+join songs as s on s.song_id = r.song_id
+join artists as a on a.artist_id = s.artist_id
+where rank <=10)
+
+select * from
+(select artist_name, dense_rank() over (order by count(*) desc) as artist_rank
+from tab
+group by artist_name) as tab2
+where artist_rank <=5;
