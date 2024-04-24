@@ -73,8 +73,8 @@ SELECT
   FORMAT_DATE('%Y-%m', created_at) AS month,
   EXTRACT('YEAR' FROM created_at) AS year,
   p.category AS product_category,
-  SUM(sale_price) - SUM(cost) AS TPV,
+  SUM(sale_price) AS TPV,
   COUNT(order_id) AS TPO,
-  SUM
+  SUM(sale_price) - SUM(cost) AS total_profit
 FROM bigquery-public-data.thelook_ecommerce.orders AS o
 JOIN bigquery-public-data.thelook_ecommerce.products AS p ON o.product_id = p.id
