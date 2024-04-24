@@ -66,3 +66,15 @@ JOIN bigquery-public-data.thelook_ecommerce.products AS p ON p.id = oi.product_i
 WHERE DATE(oi.created_at) <= '2022-04-15' AND DATE(oi.created_at) >= '2022-01-15'
 GROUP BY 1,2
 ORDER BY 1
+
+
+-- PART 2
+SELECT 
+  FORMAT_DATE('%Y-%m', created_at) AS month,
+  EXTRACT('YEAR' FROM created_at) AS year,
+  p.category AS product_category,
+  SUM(sale_price) - SUM(cost) AS TPV,
+  COUNT(order_id) AS TPO,
+  SUM
+FROM bigquery-public-data.thelook_ecommerce.orders AS o
+JOIN bigquery-public-data.thelook_ecommerce.products AS p ON o.product_id = p.id
