@@ -52,18 +52,18 @@ ORDER BY cohort_date),
 
 customer_retention AS (
 SELECT cohort_date,
-  CAST(ROUND(100.00*i1/i1,2) AS TEXT) || '%' AS r1,
-  CAST(ROUND(100.00*i2/i1,2) AS TEXT) || '%' AS r2,
-  CAST(ROUND(100.00*i3/i1,2) AS TEXT) || '%' AS r3,
-  CAST(ROUND(100.00*i4/i1,2) AS TEXT) || '%' AS r4
+  CAST(ROUND(100.00*i1/i1,2) AS STRING) || '%' AS r1,
+  CAST(ROUND(100.00*i2/i1,2) AS STRING) || '%' AS r2,
+  CAST(ROUND(100.00*i3/i1,2) AS STRING) || '%' AS r3,
+  CAST(ROUND(100.00*i4/i1,2) AS STRING) || '%' AS r4
 FROM customer_cohort),
 
 customer_churn AS (
 SELECT cohort_date,
-  CAST(100 - ROUND(100.00*i1/i1,2) AS TEXT) || '%' AS c1,
-  CAST(100 - ROUND(100.00*i2/i1,2) AS TEXT) || '%' AS c2,
-  CAST(100 - ROUND(100.00*i3/i1,2) AS TEXT) || '%' AS c3,
-  CAST(100 - ROUND(100.00*i4/i1,2) AS TEXT) || '%' AS c4
+  CAST(100 - ROUND(100.00*i1/i1,2) AS STRING) || '%' AS c1,
+  CAST(100 - ROUND(100.00*i2/i1,2) AS STRING) || '%' AS c2,
+  CAST(100 - ROUND(100.00*i3/i1,2) AS STRING) || '%' AS c3,
+  CAST(100 - ROUND(100.00*i4/i1,2) AS STRING) || '%' AS c4
 FROM customer_cohort)
 
-SELECT * FROM customer_cohort
+SELECT * FROM customer_retention
