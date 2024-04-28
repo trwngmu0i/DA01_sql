@@ -16,8 +16,8 @@ SELECT *, CAST(r_score*100 + f_score*10 + m_score AS VARCHAR) AS scores
 FROM (
 SELECT customer_id,
 	ntile(5) OVER (ORDER BY r DESC) AS r_score,
-	ntile(5) OVER (ORDER BY f DESC) AS f_score,
-	ntile(5) OVER (ORDER BY m DESC) AS m_score
+	ntile(5) OVER (ORDER BY f) AS f_score,
+	ntile(5) OVER (ORDER BY m) AS m_score
 FROM customer_rfm) AS customer_rfm_index)
 
 SELECT t2.segment, COUNT(customer_id)
